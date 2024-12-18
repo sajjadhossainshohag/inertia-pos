@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Http\Requests\Product\StoreProductRequest;
 use App\Models\Product;
-use Mockery\Matcher\Type;
-use Illuminate\Http\Request;
 use App\Models\ProductVariation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\Product\StoreProductRequest;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
@@ -22,7 +20,7 @@ class ProductController extends Controller
         $products = Product::query()->latest()->paginate(5);
 
         return Inertia::render('Product/Index', [
-            'products' => $products
+            'products' => $products,
         ]);
     }
 
@@ -67,13 +65,13 @@ class ProductController extends Controller
                     'attributes' => json_encode($variation['attributes']),
                     'product_id' => $product->id,
                     'sell_price' => $variation['sellPrice'],
-                    'purchase_price' => $variation['purchasePrice']
+                    'purchase_price' => $variation['purchasePrice'],
                 ];
             }
 
             // If variations is exists then store
             if (count($variations) > 0) {
-                // Insert product variations 
+                // Insert product variations
                 ProductVariation::insert($variations);
             }
 
@@ -94,7 +92,7 @@ class ProductController extends Controller
         // Fetch product
         $product = Product::findOrFail($id);
 
-        // Deleting product thumbnail 
+        // Deleting product thumbnail
         Storage::delete($product->thumbnail);
 
         // Deleting product

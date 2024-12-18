@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class PosController extends Controller
 {
     public function index()
     {
-        // Fetch products 
+        // Fetch products
         $products = Product::with('variations')->latest()->paginate();
 
         return Inertia::render('Pos/Index', [
-            'products' => $products
+            'products' => $products,
         ]);
     }
 
     public function orders()
     {
-        // Fetch orders 
+        // Fetch orders
         $orders = Order::latest()
             ->when(request()->get('search'), function ($query, $search) {
-                $query->whereLike('order_id', '%' . $search . '%');
+                $query->whereLike('order_id', '%'.$search.'%');
             })->paginate();
 
         return Inertia::render('Orders', [
-            'orders' => $orders
+            'orders' => $orders,
         ]);
     }
 

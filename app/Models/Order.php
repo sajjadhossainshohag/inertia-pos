@@ -11,7 +11,7 @@ class Order extends Model
     protected function casts()
     {
         return [
-            'items' => 'json'
+            'items' => 'json',
         ];
     }
 }

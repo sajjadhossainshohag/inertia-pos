@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class ProductVariation extends Model
 {
     protected $guarded = ['id'];
+
     protected $appends = ['sell_price_discount', 'tax_amount'];
 
     public function getSellPriceDiscountAttribute()
@@ -24,10 +25,11 @@ class ProductVariation extends Model
     {
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
+
     protected function casts()
     {
         return [
-            'attributes' => 'json'
+            'attributes' => 'json',
         ];
     }
 }

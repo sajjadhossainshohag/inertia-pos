@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Storage;
 class Product extends Model
 {
     protected $guarded = ['id'];
+
     protected $appends = ['thumbnail_url', 'selling_price_discount', 'tax_amount'];
 
     public function getSellingPriceDiscountAttribute()
     {
-        return  number_format($this->selling_price -  ($this->selling_price * $this->discount) / 100, 2);
+        return number_format($this->selling_price - ($this->selling_price * $this->discount) / 100, 2);
     }
 
     public function getTaxAmountAttribute()
