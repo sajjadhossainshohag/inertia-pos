@@ -85,7 +85,7 @@ const placeOrder = () => {
     });
 
     // Send to request
-    router.post(route('pos.place.order'), orderData,{
+    router.post(route('pos.place.order'), orderData, {
         onSuccess: () => cart.value = []
     })
 };
@@ -125,32 +125,40 @@ const placeOrder = () => {
                     <div class="card-header bg-secondary text-white">Cart</div>
                     <div class="card-body">
                         <ul class="list-group mb-3">
-                            <li v-for="item in cart" :key="item.id"
-                                class="list-group-item d-flex justify-content-between">
+                            <li v-for="(item, index) in cart" :key="index"
+                                class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     <strong>{{ item.name }}</strong>
-                                    <small class="text-muted d-block">x {{ item.quantity }}</small>
                                 </div>
-                                <div>
-                                    <span>${{ item.price * item.quantity }}</span>
+                                <div class="d-flex align-items-center">
+                                    <!-- Quantity Input -->
+                                    <input type="number" class="form-control form-control-sm me-2"
+                                        v-model.number="item.quantity" @input="updateCartQuantity(index, item.quantity)"
+                                        min="1" style="width: 60px;" />
+                                    <!-- Item Price -->
+                                    <span>${{ (item.price * item.quantity).toFixed(2) }}</span>
+                                    <!-- Remove Button -->
                                     <button class="btn btn-sm btn-danger ms-2"
-                                        @click="removeFromCart(item.product_id, item.variation_id)">X</button>
+                                        @click="removeFromCart(item.product_id, item.variation_id)">
+                                        X
+                                    </button>
                                 </div>
                             </li>
                         </ul>
                         <div class="d-flex justify-content-between">
                             <strong>Subtotal:</strong>
-                            <strong>${{ cartSubtotal }}</strong>
+                            <strong>${{ cartSubtotal.toFixed(2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between">
                             <strong>Tax:</strong>
-                            <strong>${{ cartTax }}</strong>
+                            <strong>${{ cartTax.toFixed(2) }}</strong>
                         </div>
                         <div class="d-flex justify-content-between mt-3">
                             <strong>Grand Total:</strong>
-                            <strong>${{ cartGrandTotal }}</strong>
+                            <strong>${{ cartGrandTotal.toFixed(2) }}</strong>
                         </div>
                     </div>
+
                     <button class="btn btn-primary m-2" @click="placeOrder">Place Order</button>
                 </div>
             </div>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('name');
             $table->text('thumbnail');
-            $table->text('sku')->unique();
+            $table->string('sku')->unique();
             $table->string('unit');
             $table->string('unit_value');
             $table->decimal('selling_price');

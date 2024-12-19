@@ -8,27 +8,31 @@ defineProps({
     orders: Object
 });
 
-
 const page = usePage();
 
 const query = ref(page.props.ziggy.query.search || '');
+const from_date = ref(page.props.ziggy.query.from_date || '');
+const to_date = ref(page.props.ziggy.query.to_date || '');
 
-// Watch the search query and debounce the request
+// Watch individual values using an array
 let timeout;
-watch(query, (newValue) => {
+watch([query, from_date, to_date], () => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-        // Call the method to update the results based on search query
-        updateSearchResults(newValue);
-    }, 500);  // 500 ms delay
+        updateSearchResults();
+    }, 500); // 500 ms delay
 });
 
-// Method to send the search query to the server
-const updateSearchResults = (query) => {
-    router.get(route('pos.orders'), { search: query }, { preserveState: true });
+// Method to send filters to the server
+const updateSearchResults = () => {
+    router.get(route('pos.orders'), {
+        search: query.value,
+        from_date: from_date.value,
+        to_date: to_date.value
+    }, { preserveState: true });
 };
-
 </script>
+
 
 <template>
 
@@ -36,8 +40,21 @@ const updateSearchResults = (query) => {
     <Nav />
 
     <div class="container mt-3">
-        <input class="form-control my-2" type="search" v-model="query" placeholder="Search By Order No"
-            aria-label="Search By Order No">
+        <div class="row">
+            <div class="col-xxl-4">
+                <label class="form-label">Search</label>
+                <input class="form-control my-2" type="search" v-model="query" placeholder="Search By Order No">
+            </div>
+            <div class="col-xxl-4">
+                <label class="form-label">From Date</label>
+                <input class="form-control my-2" type="date" v-model="from_date" placeholder="From Date">
+            </div>
+            <div class="col-xxl-4">
+                <label class="form-label">To Date</label>
+                <input class="form-control my-2" type="date" v-model="to_date" placeholder="To Date">
+            </div>
+        </div>
+
         <table class="table table-responsive">
             <thead>
                 <tr>
@@ -64,7 +81,7 @@ const updateSearchResults = (query) => {
                     <td>
                         <ul>
                             <li v-for="(item, index) in order.items" :key="index">
-                                {{ item.name }} - ${{ item.price }}
+                                {{ item.name }} - ${{ item.price }} <small>x{{ item.quantity }}</small>
                             </li>
                         </ul>
                     </td>

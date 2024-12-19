@@ -22,10 +22,14 @@ class PosController extends Controller
 
     public function orders()
     {
-        // Fetch orders
+        // Fetch orders with filters
         $orders = Order::latest()
             ->when(request()->get('search'), function ($query, $search) {
-                $query->whereLike('order_id', '%'.$search.'%');
+                $query->whereLike('order_id', '%' . $search . '%');
+            })->when(request()->get('from_date'), function ($query, $from_date) {
+                $query->whereDate('created_at', '>=', $from_date);
+            })->when(request()->get('to_date'), function ($query, $to_date) {
+                $query->whereDate('created_at', '<=', $to_date);
             })->paginate();
 
         return Inertia::render('Orders', [
@@ -59,6 +63,6 @@ class PosController extends Controller
         ]);
 
         // Redirecting back
-        return back()->with('success', 'Order placed successfully!');
+        return to_route('pos.orders')->with('success', 'Order placed successfully!');
     }
 }
