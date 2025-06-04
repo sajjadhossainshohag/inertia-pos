@@ -45,15 +45,15 @@ class ProductController extends Controller
 
             // Store product
             $product = Product::create([
-                'name' => $request->get('name'),
-                'sku' => $request->get('sku'),
-                'unit' => $request->get('unit'),
-                'thumbnail' => $thumbnail,
-                'unit_value' => $request->get('unitValue'),
-                'selling_price' => $request->get('sellingPrice'),
+                'name'           => $request->get('name'),
+                'sku'            => $request->get('sku'),
+                'unit'           => $request->get('unit'),
+                'thumbnail'      => $thumbnail,
+                'unit_value'     => $request->get('unitValue'),
+                'selling_price'  => $request->get('sellingPrice'),
                 'purchase_price' => $request->get('purchasePrice'),
-                'discount' => $request->get('discount'),
-                'tax' => $request->get('tax'),
+                'discount'       => $request->get('discount'),
+                'tax'            => $request->get('tax'),
             ]);
 
             // Temporary variable for storing variations data
@@ -62,9 +62,9 @@ class ProductController extends Controller
             // Add variation to variations variable with product id
             foreach ($request->get('variations', []) as $variation) {
                 $variations[] = [
-                    'attributes' => json_encode($variation['attributes']),
-                    'product_id' => $product->id,
-                    'sell_price' => $variation['sellPrice'],
+                    'attributes'     => json_encode($variation['attributes']),
+                    'product_id'     => $product->id,
+                    'sell_price'     => $variation['sellPrice'],
                     'purchase_price' => $variation['purchasePrice'],
                 ];
             }
