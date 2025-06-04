@@ -22,30 +22,30 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'sku' => 'required|unique:products,sku',
-            'thumbnail' => 'required|mimes:jpg,jpeg,png,webp',
-            'unit' => 'required|string|max:255',
-            'unitValue' => 'required|string|max:255',
-            'sellingPrice' => 'required|numeric',
-            'purchasePrice' => 'required|numeric',
-            'discount' => 'required|integer',
-            'tax' => 'required|integer',
-            'variations' => 'nullable|array',
-            'variations.*.attributes.*.key' => 'required',
+            'name'                            => 'required',
+            'sku'                             => 'required|unique:products,sku',
+            'thumbnail'                       => 'required|mimes:jpg,jpeg,png,webp',
+            'unit'                            => 'required|string|max:255',
+            'unitValue'                       => 'required|string|max:255',
+            'sellingPrice'                    => 'required|numeric',
+            'purchasePrice'                   => 'required|numeric',
+            'discount'                        => 'required|integer',
+            'tax'                             => 'required|integer',
+            'variations'                      => 'nullable|array',
+            'variations.*.attributes.*.key'   => 'required',
             'variations.*.attributes.*.value' => 'required',
-            'variations.*.purchasePrice' => 'required|numeric',
-            'variations.*.sellPrice' => 'required|numeric',
+            'variations.*.purchasePrice'      => 'required|numeric',
+            'variations.*.sellPrice'          => 'required|numeric',
         ];
     }
 
     public function messages()
     {
         return [
-            'variations.*.attributes.*.key.required' => 'Variation attribute is required',
+            'variations.*.attributes.*.key.required'   => 'Variation attribute is required',
             'variations.*.attributes.*.value.required' => 'Variation attribute value is required',
-            'variations.*.purchasePrice.required' => 'Variation purchase price is required',
-            'variations.*.sellPrice.required' => 'Variation sell price is required',
+            'variations.*.purchasePrice.required'      => 'Variation purchase price is required',
+            'variations.*.sellPrice.required'          => 'Variation sell price is required',
         ];
     }
 }

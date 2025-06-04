@@ -25,7 +25,7 @@ class PosController extends Controller
         // Fetch orders with filters
         $orders = Order::latest()
             ->when(request()->get('search'), function ($query, $search) {
-                $query->whereLike('order_id', '%' . $search . '%');
+                $query->whereLike('order_id', '%'.$search.'%');
             })->when(request()->get('from_date'), function ($query, $from_date) {
                 $query->whereDate('created_at', '>=', $from_date);
             })->when(request()->get('to_date'), function ($query, $to_date) {
@@ -41,25 +41,25 @@ class PosController extends Controller
     {
         // Validate
         $validated = $request->validate([
-            'items' => 'required|array',
-            'items.*.product_id' => 'nullable|integer',
+            'items'                => 'required|array',
+            'items.*.product_id'   => 'nullable|integer',
             'items.*.variation_id' => 'nullable|integer',
-            'items.*.name' => 'required|string',
-            'items.*.price' => 'required|numeric',
-            'items.*.quantity' => 'required|integer|min:1',
-            'items.*.tax' => 'required|numeric',
-            'subtotal' => 'required|numeric',
-            'tax' => 'required|numeric',
-            'total' => 'required|numeric',
+            'items.*.name'         => 'required|string',
+            'items.*.price'        => 'required|numeric',
+            'items.*.quantity'     => 'required|integer|min:1',
+            'items.*.tax'          => 'required|numeric',
+            'subtotal'             => 'required|numeric',
+            'tax'                  => 'required|numeric',
+            'total'                => 'required|numeric',
         ]);
 
         // Store order data
         Order::create([
-            'order_id' => strtoupper(Str::random(10)),
-            'items' => $request->get('items', []),
-            'tax' => $validated['tax'],
+            'order_id'  => strtoupper(Str::random(10)),
+            'items'     => $request->get('items', []),
+            'tax'       => $validated['tax'],
             'sub_total' => $validated['subtotal'],
-            'total' => $validated['total'],
+            'total'     => $validated['total'],
         ]);
 
         // Redirecting back
